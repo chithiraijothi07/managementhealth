@@ -1,0 +1,3 @@
+[sqlalchemy.dialects]
+databricks.connector=sqlalchemy_databricks:DatabricksDialect
+

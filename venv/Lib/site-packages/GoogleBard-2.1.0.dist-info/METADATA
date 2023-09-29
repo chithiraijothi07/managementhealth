@@ -1,0 +1,84 @@
+Metadata-Version: 2.1
+Name: GoogleBard
+Version: 2.1.0
+Summary: Reverse engineering of Google's Bard chatbot
+Home-page: https://github.com/acheong08/Bard
+Author: Antonio Cheong
+Author-email: acheong@student.dalat.org
+License: MIT License
+Project-URL: Bug Report, https://github.com/acheong08/Bard/issues/new
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: prompt-toolkit
+Requires-Dist: rich
+Requires-Dist: httpx[socks]
+
+# Bard <img src="https://www.gstatic.com/lamda/images/favicon_v1_150160cddff7f294ce30.svg" width="35px" />
+Reverse engineering of Google's Bard chatbot API
+
+## Installation
+```bash
+ $ pip3 install --upgrade GoogleBard
+```
+
+## Authentication
+Go to https://bard.google.com/
+
+- F12 for console
+- Copy the values
+  - Session: Go to Application → Cookies → `__Secure-1PSID` and `__Secure-1PSIDTS`. Copy the value of those cookie.
+
+## Usage
+
+```bash
+$ python3 -m Bard -h
+usage: Bard.py [-h] --session <__Secure-1PSID> --session_ts <__Secure-1PSIDTS>
+
+options:
+  -h, --help         show this help message and exit
+  --session --session_ts       pass two cookies
+```
+
+### Quick mode
+```
+$ export BARD_QUICK="true"
+$ export BARD__Secure_1PSID="<__Secure-1PSID>"
+$ export BARD__Secure_1PSIDTS="<__Secure-1PSIDTS>"
+$ python3 -m Bard
+```
+Environment variables can be placed in .zshrc.
+
+Example bash shortcut:
+```bash
+# USAGE1: bard QUESTION
+# USAGE2: echo "QUESTION" | bard
+bard () {
+	export BARD_QUICK=true
+	export BARD__Secure_1PSID=<__Secure-1PSID>
+	export BARD__Secure_1PSIDTS=<__Secure-1PSIDTS>
+	python3 -m Bard "${@:-$(</dev/stdin)}" | tail -n+7
+}
+```
+
+## [Developer Documentation](https://github.com/acheong08/Bard/blob/main/DOCUMENTATION.md)
+```python
+from os import environ
+from Bard import Chatbot
+
+Secure_1PSID = environ.get("BARD__Secure_1PSID")
+Secure_1PSIDTS = environ.get("BARD__Secure_1PSIDTS")
+chatbot = Chatbot(Secure_1PSID, Secure_1PSIDTS)
+
+chatbot.ask("Hello, how are you?")
+
+```
+
+Credits:
+- [discordtehe](https://github.com/discordtehe) - Derivative of his original reverse engineering
