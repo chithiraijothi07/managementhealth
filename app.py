@@ -32,7 +32,7 @@ db_databricks = SQLDatabase.from_databricks(
 )
 
 # Set up the OpenAI instance
-OPENAI_API_KEY = "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"
+OPENAI_API_KEY = "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"
 llm = ChatOpenAI(temperature=0, model_name='gpt-3.5-turbo-16k', openai_api_key=OPENAI_API_KEY)
 
 # Set up the SQLDatabaseChain
